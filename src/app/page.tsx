@@ -1,20 +1,14 @@
-"use client"
-import Image from "next/image";
-import { useEffect, useState } from "react";
+import { getPostList } from "@/api/post";
+import PostCard from "@/components/PostCard";
 
-export default function Home() {
-
-  const [dark, setIsDark] = useState(false)
-
-  useEffect(() => {
-    console.log(dark)
-    document.documentElement.classList.toggle("dark", dark)
-  }, [dark])
+export default async function Home() {
+  const posts = await getPostList();
 
   return (
-    <>
-      <h1 className="text-black dark:text-white">TEST</h1>
-      <button onClick={() => setIsDark(!dark)}>BUTTON</button>
-    </>
+    <main>
+      {posts.map((post) => (
+        <PostCard post={post} />
+      ))}
+    </main>
   );
 }
