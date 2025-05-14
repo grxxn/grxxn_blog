@@ -1,8 +1,9 @@
-interface Post {
+export interface Post {
   id: number;
   title: string;
   body: string;
-  // userId: number;
+  tags?: string[];
+  publishedAt?: string; // 등록일자
 }
 
 // 포스트 목록 조회

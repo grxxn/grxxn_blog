@@ -31,11 +31,9 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased dark:bg-black h-full dark:text-white`}
       >
         <Header />
-        <div className="flex items-start p-4 gap-10 min-h-full">
+        <div className="flex items-start p-4 pt-16 gap-6 h-full">
           <ProfileCard />
-          {/* <div className="border border-black/[.09] rounded-xl flex-1"> */}
-          {children}
-          {/* </div> */}
+          <div className="flex-1 h-full">{children}</div>
         </div>
       </body>
     </html>
