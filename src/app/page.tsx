@@ -5,10 +5,10 @@ export default async function Home() {
   const postList = await getPostList();
 
   return (
-    <main>
+    <div>
       {postList.map((post) => (
         <PostCard post={post} key={post.id} />
       ))}
-    </main>
+    </div>
   );
 }

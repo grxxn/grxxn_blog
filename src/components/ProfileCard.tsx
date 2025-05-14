@@ -7,7 +7,7 @@ const ProfileCard = () => {
         PHOTO
       </div>
       <div className="text-center text-sm">
-        <p className="font-bold">Jeon Young Joo</p>
+        <p className="font-black text-base">Jeon Young Joo</p>
         <p className="mb-2">(Grxxn)</p>
         <p className="text-xs">
           Junior Frontend Developer, <br />

@@ -3,16 +3,43 @@ import localFont from "next/font/local";
 import "./globals.css";
 import Header from "@/components/Header";
 import ProfileCard from "@/components/ProfileCard";
+import Footer from "@/components/Footer";
 
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
-});
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
+const notoSans = localFont({
+  src: [
+    {
+      path: "./fonts/NotoSansKR-Thin.woff",
+      weight: "100",
+      style: "normal",
+    },
+    {
+      path: "./fonts/NotoSansKR-Light.woff",
+      weight: "300",
+      style: "normal",
+    },
+    {
+      path: "./fonts/NotoSansKR-Regular.woff",
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "./fonts/NotoSansKR-Medium.woff",
+      weight: "500",
+      style: "normal",
+    },
+    {
+      path: "./fonts/NotoSansKR-Bold.woff",
+      weight: "700",
+      style: "normal",
+    },
+    {
+      path: "./fonts/NotoSansKR-Black.woff",
+      weight: "900",
+      style: "normal",
+    },
+  ],
+  variable: "--font-noto",
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -26,15 +53,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="h-full">
+    <html lang="en" className="min-h-full">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased dark:bg-black h-full dark:text-white`}
+        className={`${notoSans.variable} font-sans antialiased dark:bg-black h-full dark:text-white`}
       >
         <Header />
-        <div className="flex items-start p-4 pt-16 gap-6 h-full">
+        <main className="flex items-start p-4 pt-20 gap-6 h-full">
           <ProfileCard />
           <div className="flex-1 h-full">{children}</div>
-        </div>
+        </main>
+        <Footer />
       </body>
     </html>
   );

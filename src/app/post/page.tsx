@@ -1,6 +1,5 @@
-import React from "react";
-import { FaRegHeart } from "react-icons/fa";
 import { IoShareSocial } from "react-icons/io5";
+import LikeButton from "./LikeButton";
 
 const page = () => {
   const tagArr = ["React", "Next.js", "TypeScript"];
@@ -35,9 +34,7 @@ const page = () => {
             <button className="w-8 h-8 border rounded-full flex justify-center items-center hover:border-green-600">
               <IoShareSocial />
             </button>
-            <button className="w-8 h-8 border rounded-full flex justify-center items-center hover:border-green-600">
-              <FaRegHeart />
-            </button>
+            <LikeButton />
           </div>
         </div>
         <div className="border-b mt-5"></div>
