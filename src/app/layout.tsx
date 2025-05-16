@@ -43,7 +43,7 @@ const notoSans = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Grxxn's Blog",
+  title: "DevGrxxn",
   description: "Frontend Developer, Grxxn",
 };
 
@@ -58,7 +58,7 @@ export default function RootLayout({
         className={`${notoSans.variable} font-sans antialiased dark:bg-black h-full dark:text-white`}
       >
         <Header />
-        <main className="flex items-start p-4 pt-20 gap-6 h-full">
+        <main className="flex items-start justify-center p-4 pt-20 gap-6 h-full">
           <ProfileCard />
           <div className="flex-1 h-full">{children}</div>
         </main>
