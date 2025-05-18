@@ -65,6 +65,10 @@ const page = async ({
           }}
         />
       </article>
+      <div className="border-b my-10"></div>
+      <div className="comments">
+        <p>Comment section</p>
+      </div>
     </section>
   );
 };
