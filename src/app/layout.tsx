@@ -58,9 +58,8 @@ export default function RootLayout({
         className={`${notoSans.variable} font-sans antialiased dark:bg-black h-full dark:text-white`}
       >
         <Header />
-        <main className="flex items-start justify-center p-4 pt-20 gap-6 h-full">
-          <ProfileCard />
-          <div className="flex-1 h-full">{children}</div>
+        <main className="flex items-start justify-center pt-6 gap-6 h-full">
+          {children}
         </main>
         <Footer />
       </body>

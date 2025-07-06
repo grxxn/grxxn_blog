@@ -1,18 +1,17 @@
-import React from "react";
+import ProfileCardBtns from "./ProfileCardBtns";
 
 const ProfileCard = () => {
+
   return (
-    <div className="border rounded-xl w-64 px-3 pt-4 pb-7 h-auto sm:block hidden">
-      <div className="bg-green-50 rounded-xl text-green-600 h-52 flex justify-center items-center mb-3 border border-green-600">
+    <div className="flex items-center py-3">
+      <div className="rounded-full bg-green-100 size-[180px] mr-5 flex justify-center items-center">
         PHOTO
       </div>
-      <div className="text-center text-sm">
-        <p className="font-black text-base">Jeon Young Joo</p>
-        <p className="mb-2">(Grxxn)</p>
-        <p className="text-xs">
-          Junior Frontend Developer, <br />
-          React, Next.js, TypeScript
-        </p>
+      <div>
+        <h2 className="font-black text-3xl">GRXXN</h2>
+        <span className="text-gray-500 text-xs">@dev_grxxn</span>
+        <p className="text-sm">Front Engineer | Specializing in React & TypeScript</p>
+        <ProfileCardBtns />
       </div>
     </div>
   );
