@@ -18,9 +18,9 @@ const ContentBox = async ({
   const markdownSource = fs.readFileSync(filePath, "utf-8");
 
   return (
-    <section className="border rounded-xl min-h-full max-w-5xl p-8">
+    <section className="border rounded-xl min-h-full w-full p-8">
       <div className="mb-10">
-        <h3 className="font-bold text-4xl mb-1 text-gray-800 dark:text-gray-100">
+        <h3 className="font-bold text-4xl/snug mb-1 text-gray-800 dark:text-gray-100">
           {post.title}
         </h3>
         <div>

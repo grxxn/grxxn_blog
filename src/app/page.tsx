@@ -6,10 +6,8 @@ export default async function Home() {
   const postList = getPostList();
 
   return (
-    <div className="flex flex-col items-center content-center">
-      <div className="self-start">
-        <ProfileCard />
-      </div>
+    <div className="flex flex-col">
+      <ProfileCard />
       <div className="mt-3 mb-3 text-sm text-gray-600 self-end">
         총 <span className="ml-1">{postList.length | 0}</span>건
       </div>
