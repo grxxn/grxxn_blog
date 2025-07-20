@@ -1,6 +1,6 @@
-import { Post } from "@/api/post";
 import Link from "next/link";
 import { FaHeart } from "react-icons/fa";
+import { Post } from "../../lib/posts";
 
 interface PostCardProps {
   post: Post;
@@ -11,8 +11,8 @@ const PostCard = ({ post }: PostCardProps) => {
 
   return (
     <Link
-      href={`/post?seq=${post.id}`}
-      className="border rounded-xl w-full p-6 px-7 flex gap-5 hover:border-green-600 cursor-pointer mb-4"
+      href={{ pathname: "/post", query: { seq: post.seq } }}
+      className="group border rounded-xl w-full p-6 px-7 flex flex-col gap-5 hover:border-green-600 cursor-pointer mb-4"
     >
       <div>
         <p className="font-semibold text-2xl group-hover:text-green-600 mb-3 leading-relaxed line-clamp-1">

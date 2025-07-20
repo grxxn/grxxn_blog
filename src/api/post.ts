@@ -1,10 +1,4 @@
-export interface Post {
-  id: number;
-  title: string;
-  body: string;
-  tags?: string[];
-  publishedAt?: string; // 등록일자
-}
+import { Post } from "../../lib/posts";
 
 // 포스트 목록 조회
 export async function getPostList(): Promise<Post[]> {
@@ -49,7 +43,7 @@ export async function addPost(post: Post): Promise<Post> {
 // 포스트 수정
 export async function updatePost(post: Post): Promise<Post> {
   const res = await fetch(
-    `https://jsonplaceholder.typicode.com/posts/${post.id}`,
+    `https://jsonplaceholder.typicode.com/posts/${post.seq}`,
     {
       method: "PUT",
       body: JSON.stringify(post),
