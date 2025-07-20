@@ -14,16 +14,12 @@ const LikeButton = () => {
     }
   }, []);
 
-  useEffect(() => {
-    console.log("liked", liked);
-  }, [liked]);
 
   return (
     <button
       type="button"
-      className={`w-8 h-8 border rounded-full flex justify-center items-center hover:border-green-600 ${
-        liked && "text-green-600"
-      }`}
+      className={`w-8 h-8 border rounded-full flex justify-center items-center hover:border-green-600 ${liked && "text-green-600"
+        }`}
       onClick={() => setLiked(!liked)}
     >
       {liked ? <FaHeart /> : <FaRegHeart />}
