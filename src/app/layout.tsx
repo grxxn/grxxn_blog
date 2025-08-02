@@ -59,7 +59,7 @@ export default function RootLayout({
       >
         <Header />
         <main className="flex items-start justify-center pt-6 gap-6 h-full">
-          <div className="max-w-4xl">
+          <div className="w-full sm:max-w-4xl">
             {children}
           </div>
         </main>

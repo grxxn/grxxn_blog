@@ -31,7 +31,7 @@ const page = async ({
   const { prev, next } = getPrevNextPost();
 
   return (
-    <div className="flex flex-col max-w-4xl min-w-[56rem]">
+    <div className="flex flex-col w-full lg:max-w-4xl lg:min-w-[56rem] px-2 lg:px-0">
       <ContentBox
         post={post}
       />

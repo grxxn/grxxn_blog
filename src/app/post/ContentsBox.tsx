@@ -27,7 +27,7 @@ const ContentBox = async ({
           <span className="text-sm text-gray-500">{post.publishedAt}</span>
         </div>
         <div className="flex justify-between items-center">
-          <div className="flex gap-2 mt-4">
+          <div className="flex gap-2 mt-4 flex-wrap">
             {post.tags?.map((tag, index) => (
               <span
                 key={index}
