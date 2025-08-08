@@ -1,9 +1,8 @@
+import Footer from "@/components/Footer";
+import Header from "@/components/Header";
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-import Header from "@/components/Header";
-import ProfileCard from "@/components/ProfileCard";
-import Footer from "@/components/Footer";
 
 const notoSans = localFont({
   src: [
@@ -59,9 +58,7 @@ export default function RootLayout({
       >
         <Header />
         <main className="flex items-start justify-center pt-6 gap-6 h-full">
-          <div className="max-w-4xl">
-            {children}
-          </div>
+          <div className="max-w-4xl">{children}</div>
         </main>
         <Footer />
       </body>
