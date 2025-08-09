@@ -20,19 +20,27 @@ const Header = () => {
     }
   ];
 
+
   return (
-    <header className="w-full flex justify-center items-center py-3">
+    <header className="w-full flex justify-center items-center py-4">
       <div className="max-w-4xl w-full flex justify-between">
         <ul className="flex font-normal gap-4">
           {
-            headerMenuInfo.map((menu) => (
-              <React.Fragment key={menu.path}>
-                <li className={menu.path === path ? "relative font-bold" : "relative"}>
-                  <Link href={menu.path}>{menu.name}</Link>
-                  <span className={menu.path === path ? "inline-block w-[calc(100%+10px)] h-full absolute left-[-5px] bg-green-600/40 transition-width duration-200 ease-in" : ""}></span>
+            headerMenuInfo.map((menu) => {
+              const isActive = menu.path === path || path.startsWith(menu.path + "/")
+
+              return <React.Fragment key={menu.path}>
+                <li className={isActive ? "relative font-bold" : "relative"}>
+                  <Link href={menu.path}>
+                    {menu.name}
+                    <span className={isActive
+                      ? "inline-block h-full absolute left-[-5px] bg-green-600/40 transition-width duration-200 ease-in w-[calc(100%+10px)]"
+                      : "inline-block h-full absolute left-[-5px] bg-green-600/40 transition-width duration-200 ease-in w-0"}>
+                    </span>
+                  </Link>
                 </li>
               </React.Fragment>
-            ))
+            })
           }
         </ul>
         <DarkModeToggle />
