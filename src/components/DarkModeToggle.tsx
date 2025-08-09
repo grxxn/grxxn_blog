@@ -14,9 +14,9 @@ const DarkModeToggle = () => {
   return (
     <button type="button" onClick={() => setIsDarkMode(!isDarkMode)}>
       {isDarkMode ? (
-        <MdOutlineWbSunny color="white" size={20} />
+        <MdOutlineWbSunny size={22} />
       ) : (
-        <FiMoon color="white" size={20} />
+        <FiMoon size={22} />
       )}
     </button>
   );

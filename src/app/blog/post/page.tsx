@@ -1,6 +1,6 @@
 import Link from "next/link";
 import ContentBox from "./ContentsBox";
-import { Post, getPostDetail, getPostList } from "../../../lib/posts";
+import { Post, getPostDetail, getPostList } from "../../../../lib/posts";
 
 type PostResponseType<T> = {
   prev?: T;

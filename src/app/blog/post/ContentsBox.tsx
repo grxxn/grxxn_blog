@@ -2,7 +2,7 @@ import { MDXRemote } from "next-mdx-remote/rsc";
 import { IoShareSocial } from "react-icons/io5";
 import rehypePrettyCode from "rehype-pretty-code";
 import remarkGfm from "remark-gfm";
-import { Post } from "../../../lib/posts";
+import { Post } from "../../../../lib/posts";
 import LikeButton from "./LikeButton";
 
 const ContentBox = async ({

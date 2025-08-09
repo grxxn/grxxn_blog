@@ -11,7 +11,7 @@ const PostCard = ({ post }: PostCardProps) => {
 
   return (
     <Link
-      href={{ pathname: "/post", query: { seq: post.seq } }}
+      href={{ pathname: "/blog/post", query: { seq: post.seq } }}
       className="group border rounded-xl w-full p-6 px-7 flex flex-col gap-5 hover:border-green-600 cursor-pointer mb-4"
     >
       <div>

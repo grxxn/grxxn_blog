@@ -11,6 +11,9 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      transitionProperty: {
+        'width': 'width',
+      },
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
