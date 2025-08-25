@@ -1,39 +1,43 @@
+import Footer from "@/components/Footer";
+import Header from "@/components/Header";
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-import Header from "@/components/Header";
-import ProfileCard from "@/components/ProfileCard";
-import Footer from "@/components/Footer";
 
-const notoSans = localFont({
+const geistMono = localFont({
   src: [
     {
-      path: "./fonts/NotoSansKR-Thin.woff",
+      path: "./fonts/GeistMono-Thin.ttf",
       weight: "100",
       style: "normal",
     },
     {
-      path: "./fonts/NotoSansKR-Light.woff",
+      path: "./fonts/GeistMono-Light.ttf",
       weight: "300",
       style: "normal",
     },
     {
-      path: "./fonts/NotoSansKR-Regular.woff",
+      path: "./fonts/GeistMono-Regular.ttf",
       weight: "400",
       style: "normal",
     },
     {
-      path: "./fonts/NotoSansKR-Medium.woff",
+      path: "./fonts/GeistMono-Medium.ttf",
       weight: "500",
       style: "normal",
     },
     {
-      path: "./fonts/NotoSansKR-Bold.woff",
+      path: "./fonts/GeistMono-SemiBold.ttf",
+      weight: "600",
+      style: "normal",
+    },
+    {
+      path: "./fonts/GeistMono-Bold.ttf",
       weight: "700",
       style: "normal",
     },
     {
-      path: "./fonts/NotoSansKR-Black.woff",
+      path: "./fonts/GeistMono-Black.ttf",
       weight: "900",
       style: "normal",
     },
@@ -55,13 +59,11 @@ export default function RootLayout({
   return (
     <html lang="en" className="min-h-full">
       <body
-        className={`${notoSans.variable} font-sans antialiased dark:bg-black h-full dark:text-white`}
+        className={`${geistMono.variable} font-sans antialiased dark:bg-black min-h-screen dark:text-white`}
       >
         <Header />
         <main className="flex items-start justify-center pt-6 gap-6 h-full">
-          <div className="max-w-4xl">
-            {children}
-          </div>
+          <div className="max-w-4xl w-full">{children}</div>
         </main>
         <Footer />
       </body>

@@ -11,11 +11,11 @@ const PostCard = ({ post }: PostCardProps) => {
 
   return (
     <Link
-      href={{ pathname: "/post", query: { seq: post.seq } }}
+      href={{ pathname: "/blog/post", query: { seq: post.seq } }}
       className="group border rounded-xl w-full p-6 px-7 flex flex-col gap-5 hover:border-green-600 cursor-pointer mb-4"
     >
       <div>
-        <p className="font-semibold text-2xl group-hover:text-green-600 mb-3 leading-relaxed line-clamp-1">
+        <p className="font-bold text-2xl group-hover:text-green-600 mb-3 leading-relaxed line-clamp-1">
           {post.title}
         </p>
         <p className="text-xs text-gray-500 mt-2 mb-4 line-clamp-3 leading-relaxed">

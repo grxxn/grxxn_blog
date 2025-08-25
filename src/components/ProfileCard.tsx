@@ -8,7 +8,7 @@ const ProfileCard = () => {
         PHOTO
       </div>
       <div>
-        <h2 className="font-black text-3xl">GRXXN</h2>
+        <h2 className="font-black text-3xl">Grxxn</h2>
         <span className="text-gray-500 text-xs">@dev_grxxn</span>
         <p className="text-sm">Front Engineer | Specializing in React & TypeScript</p>
         <ProfileCardBtns />
