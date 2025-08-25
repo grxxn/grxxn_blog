@@ -4,6 +4,7 @@ import rehypePrettyCode from "rehype-pretty-code";
 import remarkGfm from "remark-gfm";
 import { Post } from "../../../../lib/posts";
 import LikeButton from "./LikeButton";
+import MDXContent from "../MDXContent";
 
 const ContentBox = async ({
   post
@@ -46,18 +47,7 @@ const ContentBox = async ({
         </div>
         <div className="border-b mt-5"></div>
       </div>
-      <article className="prose prose-lg dark:prose-invert leading-7 text-gray-800 dark:text-gray-100 max-w-none">
-        <MDXRemote
-          source={post.conts}
-          options={{
-            parseFrontmatter: true,
-            mdxOptions: {
-              remarkPlugins: [remarkGfm],
-              rehypePlugins: [[rehypePrettyCode]],
-            },
-          }}
-        />
-      </article>
+      <MDXContent source={post.conts} />
       <div className="border-b my-10"></div>
       <div className="comments">
         <p>Comment section</p>
