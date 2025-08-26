@@ -15,7 +15,7 @@ const prettyCodeOptions: Options = {
 
 export default function MDXContent({ source }: { source: string }) {
   return (
-    <article className="prose prose-neutral dark:prose-invert mex-w-none">
+    <article className="prose prose-neutral dark:prose-invert max-w-none">
       <MDXRemote
         source={source}
         components={mdxComponents}
