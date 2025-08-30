@@ -1,10 +1,8 @@
-import { MDXRemote } from "next-mdx-remote/rsc";
 import { IoShareSocial } from "react-icons/io5";
-import rehypePrettyCode from "rehype-pretty-code";
-import remarkGfm from "remark-gfm";
 import { Post } from "../../../../lib/posts";
 import LikeButton from "./LikeButton";
 import MDXContent from "../MDXContent";
+import Utterances from "@/components/Utterances";
 
 const ContentBox = async ({
   post
@@ -50,7 +48,7 @@ const ContentBox = async ({
       <MDXContent source={post.conts} />
       <div className="border-b my-10"></div>
       <div className="comments">
-        <p>Comment section</p>
+        <Utterances />
       </div>
     </section>
   );
