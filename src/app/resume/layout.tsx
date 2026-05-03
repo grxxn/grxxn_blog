@@ -5,7 +5,7 @@ export const metadata: Metadata = {
   description: "Frontend Developer, Grxxn",
 };
 
-export default function BlogLayout({
+export default function ResumeLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;

@@ -1,8 +1,7 @@
+import Utterances from "@/app/blog/post/_components/Utterances";
 import { IoShareSocial } from "react-icons/io5";
-import { Post } from "../../../../lib/posts";
-import LikeButton from "./LikeButton";
-import MDXContent from "../MDXContent";
-import Utterances from "@/components/Utterances";
+import { Post } from "../../../../../lib/posts";
+import MDXContent from "../../_components/MDXContent";
 
 const ContentBox = async ({
   post

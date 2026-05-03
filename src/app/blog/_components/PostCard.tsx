@@ -1,6 +1,5 @@
 import Link from "next/link";
-import { FaHeart } from "react-icons/fa";
-import { Post } from "../../lib/posts";
+import { Post } from "../../../../lib/posts";
 
 interface PostCardProps {
   post: Post;
