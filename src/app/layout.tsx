@@ -1,50 +1,30 @@
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import type { Metadata } from "next";
+import { Share_Tech_Mono } from 'next/font/google';
 import localFont from "next/font/local";
 import "./globals.css";
 
-const geistMono = localFont({
+
+const shareTechMono = Share_Tech_Mono({
+  weight: '400',
+  subsets: ['latin'],
+  variable: '--font-mono',
+})
+
+const pretendard = localFont({
   src: [
     {
-      path: "./fonts/GeistMono-Thin.ttf",
-      weight: "100",
-      style: "normal",
+      path: './fonts/Pretendard-Regular.woff2',
+      weight: '400',
     },
     {
-      path: "./fonts/GeistMono-Light.ttf",
-      weight: "300",
-      style: "normal",
-    },
-    {
-      path: "./fonts/GeistMono-Regular.ttf",
-      weight: "400",
-      style: "normal",
-    },
-    {
-      path: "./fonts/GeistMono-Medium.ttf",
-      weight: "500",
-      style: "normal",
-    },
-    {
-      path: "./fonts/GeistMono-SemiBold.ttf",
-      weight: "600",
-      style: "normal",
-    },
-    {
-      path: "./fonts/GeistMono-Bold.ttf",
-      weight: "700",
-      style: "normal",
-    },
-    {
-      path: "./fonts/GeistMono-Black.ttf",
-      weight: "900",
-      style: "normal",
+      path: './fonts/Pretendard-Bold.woff2',
+      weight: '700',
     },
   ],
-  variable: "--font-noto",
-  display: "swap",
-});
+  variable: '--font-pretendard',
+})
 
 export const metadata: Metadata = {
   title: "DevGrxxn",
@@ -59,11 +39,11 @@ export default function RootLayout({
   return (
     <html lang="en" className="min-h-full">
       <body
-        className={`${geistMono.variable} font-sans antialiased dark:bg-black min-h-screen dark:text-white`}
+        className={`${shareTechMono.variable} ${pretendard.variable} font-sans antialiased dark:bg-black min-h-screen dark:text-white`}
       >
         <Header />
-        <main className="flex items-start justify-center pt-6 gap-6 h-full">
-          <div className="max-w-4xl w-full">{children}</div>
+        <main className="flex items-start justify-center gap-6 w-full pt-20 h-[calc(100vh-5rem)]">
+          {children}
         </main>
         <Footer />
       </body>

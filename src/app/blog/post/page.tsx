@@ -39,14 +39,6 @@ const page = async ({
         <Link href={"/blog"} className="border rounded-md p-3 px-6 text-xs bg-black text-white">목록으로</Link>
         <div className="flex flex-col gap-2 mt-8">
           {
-            prev && (
-              <Link href={`/blog/post?seq=${prev.seq}`} className="text-left flex items-center">
-                <span className="mr-3 text-gray-500 text-xs">이전글</span>
-                <span>{prev.title}</span>
-              </Link>
-            )
-          }
-          {
             next && (
               <Link href={`/blog/post?seq=${next.seq}`} className="text-left flex items-center">
                 <span className="mr-3 text-gray-500 text-xs">다음글</span>
@@ -54,7 +46,14 @@ const page = async ({
               </Link>
             )
           }
-
+          {
+            prev && (
+              <Link href={`/blog/post?seq=${prev.seq}`} className="text-left flex items-center">
+                <span className="mr-3 text-gray-500 text-xs">이전글</span>
+                <span>{prev.title}</span>
+              </Link>
+            )
+          }
         </div>
       </div>
     </div>

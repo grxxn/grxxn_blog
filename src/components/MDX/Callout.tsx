@@ -1,5 +1,4 @@
 import React, { ReactNode } from 'react';
-import { FiAlertTriangle, FiCheckCircle, FiInfo, FiXCircle } from 'react-icons/fi';
 
 type CalloutProps = {
   type?: "info" | "warning" | "success" | "error";
