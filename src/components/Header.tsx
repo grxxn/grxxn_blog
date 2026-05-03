@@ -4,21 +4,23 @@ import React from "react";
 import DarkModeToggle from "./DarkModeToggle";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { cn } from "@/lib/utils";
+
+const HEADER_MENU_INFO = [
+  {
+    name: "Home",
+    path: "/",
+  }, {
+    name: "Posts",
+    path: "/blog",
+  }, {
+    name: "Resume",
+    path: "/resume",
+  }
+];
 
 const Header = () => {
   const path = usePathname();
-  const headerMenuInfo = [
-    {
-      name: "Home",
-      path: "/",
-    }, {
-      name: "Posts",
-      path: "/blog",
-    }, {
-      name: "Resume",
-      path: "/resume",
-    }
-  ];
 
 
   return (
@@ -26,20 +28,16 @@ const Header = () => {
       <div className="max-w-4xl w-full flex justify-between">
         <ul className="flex font-normal gap-4">
           {
-            headerMenuInfo.map((menu) => {
+            HEADER_MENU_INFO.map((menu) => {
               const isActive = menu.path === path || path.startsWith(menu.path + "/")
 
-              return <React.Fragment key={menu.path}>
-                <li className={isActive ? "relative font-bold" : "relative"}>
+              return <li key={menu.path} className={cn("relative font-monoCustom", isActive && "font-bold")}>
                   <Link href={menu.path}>
                     {menu.name}
-                    <span className={isActive
-                      ? "inline-block h-full absolute left-[-5px] bg-green-600/40 transition-width duration-200 ease-in w-[calc(100%+10px)]"
-                      : "inline-block h-full absolute left-[-5px] bg-green-600/40 transition-width duration-200 ease-in w-0"}>
+                    <span className={cn("inline-block h-full absolute left-[-5px] bg-green-600/40 transition-width duration-200 ease-in", isActive ? "w-[calc(100%+10px)]" : "w-0")}>
                     </span>
                   </Link>
                 </li>
-              </React.Fragment>
             })
           }
         </ul>
