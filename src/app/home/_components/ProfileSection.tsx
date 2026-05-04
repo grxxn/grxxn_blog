@@ -41,9 +41,18 @@ function WaveText({ text, isActive }: { text: string; isActive: boolean }) {
   );
 }
 
-function FitText({ children, onClick, className }: { children: ReactNode; onClick?: () => void; className?: string }) {
+function FitText({
+  children,
+  onClick,
+  className,
+}: {
+  children: ReactNode;
+  onClick?: () => void;
+  className?: string;
+}) {
   const containerRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLSpanElement>(null);
+  const [visible, setVisible] = useState(false);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -56,7 +65,7 @@ function FitText({ children, onClick, className }: { children: ReactNode; onClic
       const textWidth = text.scrollWidth;
       if (textWidth > 0) {
         text.style.fontSize = `${(containerWidth / textWidth) * 100}px`;
-        container.classList.remove("opacity-0");
+        setVisible(true);
       }
     };
 
@@ -69,12 +78,19 @@ function FitText({ children, onClick, className }: { children: ReactNode; onClic
   return (
     <div
       ref={containerRef}
-      className={cn("w-full opacity-0 transition-opacity duration-300", onClick && "cursor-pointer")}
+      className={cn(
+        "w-full transition-opacity duration-300",
+        !visible && "opacity-0",
+        onClick && "cursor-pointer",
+      )}
       onClick={onClick}
     >
       <span
         ref={textRef}
-        className={cn("inline-block font-black whitespace-nowrap leading-none", className)}
+        className={cn(
+          "inline-block font-black whitespace-nowrap leading-none",
+          className,
+        )}
       >
         {children}
       </span>
@@ -98,73 +114,80 @@ export default function ProfileSection() {
   const linkRowActive = hovered === "github" || hovered === "linkedin";
 
   return (
-    <section className="relative w-2/4 h-full flex flex-col justify-center gap-3 text-neutral-700">
+    <section className="relative w-full min-h-[calc(100vh-3.5rem)] flex items-center justify-center">
       {/* 오버레이 */}
       <div
         className={cn(
           "absolute inset-0 z-10 pointer-events-none",
           "bg-white/70 dark:bg-black/70",
           "transition-opacity duration-300",
-          hovered ? "opacity-100" : "opacity-0"
+          hovered ? "opacity-100" : "opacity-0",
         )}
       />
+      <div className="w-2/4 flex flex-col gap-3 text-neutral-700">
+        {/* 이름, 직함 — 오버레이 뒤 */}
+        <FitText className="font-monoCustom">Jeon Young Joo</FitText>
+        <FitText className="font-monoCustom">FRONTEND ENGINEER</FitText>
 
-      {/* 이름, 직함 — 오버레이 뒤 */}
-      <FitText className="font-monoCustom">
-        Jeon Young Joo
-      </FitText>
-      <FitText className="font-monoCustom">FRONTEND ENGINEER</FitText>
+        {/* 이메일 */}
+        <div
+          className={cn(
+            "relative transition-[transform,color] duration-200 origin-left",
+            hovered === "email"
+              ? "z-20 scale-[1.03] text-green-400"
+              : "z-0 scale-100",
+          )}
+          onMouseEnter={() => setHovered("email")}
+          onMouseLeave={() => setHovered(null)}
+        >
+          <FitText onClick={handleCopyEmail} className="font-monoCustom">
+            <WaveText
+              text="devgrxxn@gmail.com"
+              isActive={hovered === "email"}
+            />
+          </FitText>
+        </div>
 
-      {/* 이메일 */}
-      <div
-        className={cn(
-          "relative transition-[transform,color] duration-200 origin-left",
-          hovered === "email" ? "z-20 scale-[1.03] text-green-400" : "z-0 scale-100"
-        )}
-        onMouseEnter={() => setHovered("email")}
-        onMouseLeave={() => setHovered(null)}
-      >
-        <FitText onClick={handleCopyEmail} className="font-monoCustom">
-          <WaveText text="devgrxxn@gmail.com" isActive={hovered === "email"} />
-        </FitText>
-      </div>
-
-      {/* GitHub / LinkedIn */}
-      <div
-        className={cn("relative", linkRowActive ? "z-20" : "z-0")}
-        onMouseLeave={() => setHovered(null)}
-      >
-        <FitText className="font-monoCustom">
-          <a
-            href="https://github.com/grxxn"
-            target="_blank"
-            onMouseEnter={() => setHovered("github")}
-            className={cn(
-              "inline-flex items-center gap-[0.2em]",
-              "transition-[opacity,transform,color] duration-200 origin-left",
-              hovered === "github" ? "scale-[1.05] text-green-400" : "scale-100",
-              hovered === "linkedin" ? "opacity-25" : "opacity-100"
-            )}
-          >
-            <FaArrowRight />
-            <WaveText text="GITHUB" isActive={hovered === "github"} />
-          </a>
-          {" "}
-          <a
-            href="https://www.linkedin.com/in/%EC%98%81%EC%A3%BC-%EC%A0%84-136b662b4/"
-            target="_blank"
-            onMouseEnter={() => setHovered("linkedin")}
-            className={cn(
-              "inline-flex items-center gap-[0.2em]",
-              "transition-[opacity,transform,color] duration-200 origin-left",
-              hovered === "linkedin" ? "scale-[1.05] text-green-400" : "scale-100",
-              hovered === "github" ? "opacity-25" : "opacity-100"
-            )}
-          >
-            <FaArrowRight />
-            <WaveText text="LINKEDIN" isActive={hovered === "linkedin"} />
-          </a>
-        </FitText>
+        {/* GitHub / LinkedIn */}
+        <div
+          className={cn("relative", linkRowActive ? "z-20" : "z-0")}
+          onMouseLeave={() => setHovered(null)}
+        >
+          <FitText className="font-monoCustom">
+            <a
+              href="https://github.com/grxxn"
+              target="_blank"
+              onMouseEnter={() => setHovered("github")}
+              className={cn(
+                "inline-flex items-center gap-[0.2em]",
+                "transition-[opacity,transform,color] duration-200 origin-left",
+                hovered === "github"
+                  ? "scale-[1.05] text-green-400"
+                  : "scale-100",
+                hovered === "linkedin" ? "opacity-25" : "opacity-100",
+              )}
+            >
+              <FaArrowRight />
+              <WaveText text="GITHUB" isActive={hovered === "github"} />
+            </a>{" "}
+            <a
+              href="https://www.linkedin.com/in/%EC%98%81%EC%A3%BC-%EC%A0%84-136b662b4/"
+              target="_blank"
+              onMouseEnter={() => setHovered("linkedin")}
+              className={cn(
+                "inline-flex items-center gap-[0.2em]",
+                "transition-[opacity,transform,color] duration-200 origin-left",
+                hovered === "linkedin"
+                  ? "scale-[1.05] text-green-400"
+                  : "scale-100",
+                hovered === "github" ? "opacity-25" : "opacity-100",
+              )}
+            >
+              <FaArrowRight />
+              <WaveText text="LINKEDIN" isActive={hovered === "linkedin"} />
+            </a>
+          </FitText>
+        </div>
       </div>
     </section>
   );

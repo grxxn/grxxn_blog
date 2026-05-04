@@ -1,6 +1,6 @@
 import type { Config } from "tailwindcss";
-import lineClamp from '@tailwindcss/line-clamp'
-import typography from '@tailwindcss/typography'
+import lineClamp from "@tailwindcss/line-clamp";
+import typography from "@tailwindcss/typography";
 
 const config: Config = {
   darkMode: "class",
@@ -12,7 +12,7 @@ const config: Config = {
   theme: {
     extend: {
       transitionProperty: {
-        'width': 'width',
+        width: "width",
       },
       colors: {
         background: "var(--background)",
@@ -21,9 +21,9 @@ const config: Config = {
       fontFamily: {
         sans: ["var(--font-noto)"],
         monoCustom: [
-          'var(--font-mono)',
-          'var(--font-pretendard)',
-          'sans-serif',
+          "var(--font-mono)",
+          "var(--font-pretendard)",
+          "sans-serif",
         ],
       },
       screens: {
@@ -32,6 +32,6 @@ const config: Config = {
       },
     },
   },
-  plugins: [lineClamp, typography, require('tailwindcss-fluid-type')],
+  plugins: [lineClamp, typography],
 };
 export default config;

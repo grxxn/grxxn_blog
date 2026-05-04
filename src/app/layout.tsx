@@ -1,30 +1,29 @@
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import type { Metadata } from "next";
-import { Share_Tech_Mono } from 'next/font/google';
+import { Share_Tech_Mono } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
 
-
 const shareTechMono = Share_Tech_Mono({
-  weight: '400',
-  subsets: ['latin'],
-  variable: '--font-mono',
-})
+  weight: "400",
+  subsets: ["latin"],
+  variable: "--font-mono",
+});
 
 const pretendard = localFont({
   src: [
     {
-      path: './fonts/Pretendard-Regular.woff2',
-      weight: '400',
+      path: "./fonts/Pretendard-Regular.woff2",
+      weight: "400",
     },
     {
-      path: './fonts/Pretendard-Bold.woff2',
-      weight: '700',
+      path: "./fonts/Pretendard-Bold.woff2",
+      weight: "700",
     },
   ],
-  variable: '--font-pretendard',
-})
+  variable: "--font-pretendard",
+});
 
 export const metadata: Metadata = {
   title: "DevGrxxn",
@@ -42,7 +41,7 @@ export default function RootLayout({
         className={`${shareTechMono.variable} ${pretendard.variable} font-sans antialiased dark:bg-black min-h-screen dark:text-white`}
       >
         <Header />
-        <main className="flex items-start justify-center gap-6 w-full pt-20 h-[calc(100vh-5rem)]">
+        <main className="flex flex-col items-start gap-6 pt-14">
           {children}
         </main>
         <Footer />
