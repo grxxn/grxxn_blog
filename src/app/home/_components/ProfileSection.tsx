@@ -1,44 +1,55 @@
 "use client";
 import { useEffect, useRef, ReactNode, useState } from "react";
-import { motion, useAnimation } from "framer-motion";
 import { FaArrowRight } from "react-icons/fa";
 import { cn } from "@/lib/utils";
 
 type HoveredItem = "email" | "github" | "linkedin" | null;
 
-function WaveText({ text, isActive }: { text: string; isActive: boolean }) {
-  const controls = useAnimation();
+const SCRAMBLE_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@._-!#$%";
+
+function useScramble(finalText: string, startDelay = 0, trigger = 0) {
+  const [output, setOutput] = useState(finalText);
 
   useEffect(() => {
-    if (isActive) {
-      controls.start((i) => ({
-        y: [0, "-0.22em", 0],
-        transition: {
-          duration: 0.35,
-          delay: i * 0.07,
-          ease: ["backOut", "circIn"],
-          times: [0, 0.4, 1],
-        },
-      }));
-    } else {
-      controls.start({ y: 0, transition: { duration: 0.15 } });
-    }
-  }, [isActive, controls]);
+    const duration = 1200;
+    let rafId: number;
+    let startTime: number | null = null;
 
-  return (
-    <span>
-      {text.split("").map((char, i) => (
-        <motion.span
-          key={i}
-          custom={i}
-          animate={controls}
-          className="inline-block"
-        >
-          {char === " " ? " " : char}
-        </motion.span>
-      ))}
-    </span>
-  );
+    const tick = (now: number) => {
+      if (!startTime) startTime = now;
+      const elapsed = now - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      const revealedCount = Math.floor(progress * finalText.length);
+
+      setOutput(
+        finalText
+          .split("")
+          .map((char, i) => {
+            if (char === " ") return " ";
+            if (i < revealedCount) return char;
+            return SCRAMBLE_CHARS[Math.floor(Math.random() * SCRAMBLE_CHARS.length)];
+          })
+          .join("")
+      );
+
+      if (progress < 1) {
+        rafId = requestAnimationFrame(tick);
+      } else {
+        setOutput(finalText);
+      }
+    };
+
+    const timeout = setTimeout(() => {
+      rafId = requestAnimationFrame(tick);
+    }, startDelay);
+
+    return () => {
+      clearTimeout(timeout);
+      cancelAnimationFrame(rafId);
+    };
+  }, [finalText, startDelay, trigger]);
+
+  return output;
 }
 
 function FitText({
@@ -100,6 +111,30 @@ function FitText({
 
 export default function ProfileSection() {
   const [hovered, setHovered] = useState<HoveredItem>(null);
+  const [scrambleTrigger, setScrambleTrigger] = useState(0);
+
+  useEffect(() => {
+    let timeoutId: ReturnType<typeof setTimeout>;
+
+    const schedule = () => {
+      const delay = 8000 + Math.random() * 4000;
+      timeoutId = setTimeout(() => {
+        setScrambleTrigger((v) => v + 1);
+        schedule();
+      }, delay);
+    };
+
+    // 초기 스크램블 완료 후 첫 재스크램블 예약
+    timeoutId = setTimeout(schedule, 2000);
+
+    return () => clearTimeout(timeoutId);
+  }, []);
+
+  const nameText = useScramble("Jeon Young Joo", 0, scrambleTrigger);
+  const titleText = useScramble("FRONTEND ENGINEER", 0, scrambleTrigger);
+  const emailText = useScramble("devgrxxn@gmail.com", 0, scrambleTrigger);
+  const githubText = useScramble("GITHUB", 0, scrambleTrigger);
+  const linkedinText = useScramble("LINKEDIN", 0, scrambleTrigger);
 
   const handleCopyEmail = async () => {
     const EMAIL = "devgrxxn@gmail.com";
@@ -125,9 +160,8 @@ export default function ProfileSection() {
         )}
       />
       <div className="w-2/4 flex flex-col gap-3 text-neutral-700">
-        {/* 이름, 직함 — 오버레이 뒤 */}
-        <FitText className="font-monoCustom">Jeon Young Joo</FitText>
-        <FitText className="font-monoCustom">FRONTEND ENGINEER</FitText>
+        <FitText className="font-monoCustom">{nameText}</FitText>
+        <FitText className="font-monoCustom">{titleText}</FitText>
 
         {/* 이메일 */}
         <div
@@ -141,10 +175,7 @@ export default function ProfileSection() {
           onMouseLeave={() => setHovered(null)}
         >
           <FitText onClick={handleCopyEmail} className="font-monoCustom">
-            <WaveText
-              text="devgrxxn@gmail.com"
-              isActive={hovered === "email"}
-            />
+            {emailText}
           </FitText>
         </div>
 
@@ -168,7 +199,7 @@ export default function ProfileSection() {
               )}
             >
               <FaArrowRight />
-              <WaveText text="GITHUB" isActive={hovered === "github"} />
+              {githubText}
             </a>{" "}
             <a
               href="https://www.linkedin.com/in/%EC%98%81%EC%A3%BC-%EC%A0%84-136b662b4/"
@@ -184,7 +215,7 @@ export default function ProfileSection() {
               )}
             >
               <FaArrowRight />
-              <WaveText text="LINKEDIN" isActive={hovered === "linkedin"} />
+              {linkedinText}
             </a>
           </FitText>
         </div>

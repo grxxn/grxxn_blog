@@ -1,203 +1,189 @@
 "use client";
 
-import Image from "next/image";
-import { motion, useInView } from "framer-motion";
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
+import { useInView } from "framer-motion";
 
-const variantStyles = {
-  blue: "bg-blue-50/60 border-blue-200/70 text-blue-500/80",
-  violet: "bg-violet-50/60 border-violet-200/70 text-violet-500/80",
-  rose: "bg-rose-50/60 border-rose-200/70 text-rose-500/80",
-};
+type LineType = "command" | "blank" | "category" | "item";
 
-const TechBadge = ({
-  tech,
-  variant,
-}: {
-  tech: string;
-  variant: keyof typeof variantStyles;
-}) => (
-  <span
-    className={`block text-center text-lg font-monoCustom px-3 py-2 rounded-md border ${variantStyles[variant]}`}
-  >
-    {tech}
-  </span>
-);
-
-const SVG_DELAY = 0.75;
-// stiffness 800, damping 20, mass 2 기준 svg가 y=0 첫 도달 ~0.07s
-const SHAKE_TRIGGER = SVG_DELAY + 0.07;
-
-const dropTransition = (delay: number) => ({
-  type: "spring" as const,
-  stiffness: 500,
-  damping: 20,
-  mass: 0.8,
-  delay,
-});
-
-// 요소별 고유 흔들림 패턴 — [h4, li[0], li[1], li[2]]
-const shakePatterns: { x: number[]; y: number[]; delay: number }[] = [
-  { x: [0, -8, 6, -3, 1, 0], y: [0, 4, -5, 2, 0, 0], delay: SHAKE_TRIGGER },
-  {
-    x: [0, 8, -5, 3, -1, 0],
-    y: [0, -5, 3, -2, 1, 0],
-    delay: SHAKE_TRIGGER + 0.02,
-  },
-  {
-    x: [0, -5, 8, -4, 2, 0],
-    y: [0, 5, -6, 3, -1, 0],
-    delay: SHAKE_TRIGGER + 0.05,
-  },
-  {
-    x: [0, 6, -7, 4, -2, 0],
-    y: [0, -4, 5, -3, 1, 0],
-    delay: SHAKE_TRIGGER + 0.03,
-  },
+const SKILL_LINES: { type: LineType; text: string }[] = [
+  { type: "command", text: "$ skills --list" },
+  { type: "blank", text: "" },
+  { type: "category", text: "[Core]" },
+  { type: "item", text: "  → React.js" },
+  { type: "item", text: "  → Next.js" },
+  { type: "item", text: "  → TypeScript" },
+  { type: "blank", text: "" },
+  { type: "category", text: "[State Management]" },
+  { type: "item", text: "  → Zustand" },
+  { type: "item", text: "  → React-Query" },
+  { type: "item", text: "  → Redux-Toolkit" },
+  { type: "blank", text: "" },
+  { type: "category", text: "[Styling]" },
+  { type: "item", text: "  → TailwindCSS" },
+  { type: "item", text: "  → Styled-components" },
+  { type: "item", text: "  → Material-UI" },
 ];
 
-// drop용 outer + shake용 inner로 레이어 분리
-const Dropped = ({
-  dropDelay,
-  shakeIdx,
-  inView,
-  className,
-  children,
-}: {
-  dropDelay: number;
-  shakeIdx: number;
-  inView: boolean;
-  className?: string;
-  children: React.ReactNode;
-}) => {
-  const pattern = shakePatterns[shakeIdx];
-  return (
-    <motion.div
-      initial={{ y: -80, opacity: 0 }}
-      animate={inView ? { y: 0, opacity: 1 } : { y: -80, opacity: 0 }}
-      transition={dropTransition(dropDelay)}
-      className={className}
-    >
-      <motion.div
-        animate={inView ? { x: pattern.x, y: pattern.y } : { x: 0, y: 0 }}
-        transition={{ duration: 0.45, delay: pattern.delay, ease: "easeOut" }}
-      >
-        {children}
-      </motion.div>
-    </motion.div>
-  );
-};
+const PROFILE_LINES: { type: "header" | "divider" | "info"; label: string; value: string }[] = [
+  { type: "header", label: "", value: "grxxn@portfolio" },
+  { type: "divider", label: "", value: "──────────────────" },
+  { type: "info", label: "Role  ", value: "Frontend Engineer" },
+  { type: "info", label: "Based ", value: "Seoul, Korea" },
+  { type: "info", label: "Exp   ", value: "4+ years" },
+  { type: "info", label: "Focus ", value: "React / Next.js" },
+  { type: "info", label: "Blog  ", value: "devgrxxn.com" },
+  { type: "info", label: "GitHub", value: "github.com/grxxn" },
+];
 
-const SkillColumn = ({
-  icon,
-  alt,
-  title,
-  techs,
-  baseDelay = 0,
-  inView,
-  variant,
-}: {
-  icon: string;
-  alt: string;
-  title: string;
-  techs: string[];
-  baseDelay?: number;
-  inView: boolean;
-  variant: keyof typeof variantStyles;
-}) => {
-  const liDelays = techs.map(
-    (_, i) => baseDelay + (techs.length - 1 - i) * 0.18,
-  );
-  const h4Delay = baseDelay + 0.55;
+const PALETTE = [
+  "#ff5f57", "#febc2e", "#28c840", "#4ade80",
+  "#60a5fa", "#a78bfa", "#f472b6", "#94a3b8",
+];
 
-  return (
-    <div className="flex flex-col items-center w-full">
-      {/* svg — 맨 마지막 낙하, 착지 squash. key로 매 진입마다 재마운트 */}
-      <motion.div
-        key={inView ? 1 : 0}
-        initial={{ y: -200, opacity: 0, scaleY: 1 }}
-        animate={
-          inView
-            ? { y: 0, opacity: 1, scaleY: [1, 0.7, 1.2, 0.92, 1] }
-            : { y: -200, opacity: 0, scaleY: 1 }
-        }
-        transition={{
-          y: {
-            type: "spring",
-            stiffness: 800,
-            damping: 20,
-            mass: 2,
-            delay: SVG_DELAY,
-          },
-          opacity: { delay: SVG_DELAY, duration: 0.04 },
-          scaleY: {
-            duration: 0.35,
-            delay: SHAKE_TRIGGER,
-            ease: "easeOut",
-            times: [0, 0.25, 0.55, 0.8, 1],
-          },
-        }}
-        style={{ transformOrigin: "bottom center" }}
-        className="mb-4"
-      >
-        <Image src={icon} alt={alt} width={70} height={70} />
-      </motion.div>
-
-      {/* h4 */}
-      <Dropped
-        dropDelay={h4Delay}
-        shakeIdx={0}
-        inView={inView}
-        className="mb-9"
-      >
-        <h4 className="font-monoCustom font-bold text-2xl">{title}</h4>
-      </Dropped>
-
-      {/* li items */}
-      <ul className="flex flex-col gap-8 w-full">
-        {techs.map((tech, i) => (
-          <li key={tech}>
-            <Dropped dropDelay={liDelays[i]} shakeIdx={i + 1} inView={inView}>
-              <TechBadge tech={tech} variant={variant} />
-            </Dropped>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-};
+const SKILL_INTERVAL = 90;
+const PROFILE_INTERVAL = 130;
+const PROFILE_DELAY = 200;
 
 export const SkillsSection = () => {
   const ref = useRef(null);
-  const inView = useInView(ref, { once: false, margin: "-300px 0px" });
+  const inView = useInView(ref, { once: false, margin: "-200px 0px" });
+
+  const [skillCount, setSkillCount] = useState(0);
+  const [profileCount, setProfileCount] = useState(0);
+  const [showPalette, setShowPalette] = useState(false);
+  const [cursorOn, setCursorOn] = useState(true);
+
+  const skillDone = skillCount >= SKILL_LINES.length;
+  const profileDone = profileCount >= PROFILE_LINES.length;
+  const done = skillDone && profileDone;
+
+  useEffect(() => {
+    if (!inView) {
+      setSkillCount(0);
+      setProfileCount(0);
+      setShowPalette(false);
+      return;
+    }
+
+    let sc = 0;
+    const skillIv = setInterval(() => {
+      sc++;
+      setSkillCount(sc);
+      if (sc >= SKILL_LINES.length) clearInterval(skillIv);
+    }, SKILL_INTERVAL);
+
+    let pc = 0;
+    let profileIv: ReturnType<typeof setInterval> | undefined;
+    const profileTimeout = setTimeout(() => {
+      profileIv = setInterval(() => {
+        pc++;
+        setProfileCount(pc);
+        if (pc >= PROFILE_LINES.length) {
+          clearInterval(profileIv);
+          setTimeout(() => setShowPalette(true), 200);
+        }
+      }, PROFILE_INTERVAL);
+    }, PROFILE_DELAY);
+
+    return () => {
+      clearInterval(skillIv);
+      clearTimeout(profileTimeout);
+      clearInterval(profileIv);
+    };
+  }, [inView]);
+
+  useEffect(() => {
+    if (!done) return;
+    const iv = setInterval(() => setCursorOn((v) => !v), 530);
+    return () => {
+      clearInterval(iv);
+      setCursorOn(true);
+    };
+  }, [done]);
 
   return (
     <section ref={ref} className="w-full flex justify-center mb-16">
-      <div className="max-w-[1080px] w-full border border-gray-200 rounded-3xl p-10 grid grid-cols-3 gap-8 bg-[#fefefe] shadow-[0_2px_0_0_#e5e7eb,0_8px_24px_-4px_rgba(0,0,0,0.08)]">
-        <SkillColumn
-          icon="/images/icons/gear-svgrepo-com.svg"
-          alt="Core"
-          title="Core"
-          techs={["React.js", "Next.js", "TypeScript"]}
-          inView={inView}
-          variant="blue"
-        />
-        <SkillColumn
-          icon="/images/icons/data-accesskafka-cluster-svgrepo-com.svg"
-          alt="State Management"
-          title="State Management"
-          techs={["Zustand", "React-Query", "Redux-Toolkit"]}
-          inView={inView}
-          variant="violet"
-        />
-        <SkillColumn
-          icon="/images/icons/palette-color-svgrepo-com.svg"
-          alt="Styling"
-          title="Styling"
-          techs={["TailwindCSS", "Styled-components", "Material-UI"]}
-          inView={inView}
-          variant="rose"
-        />
+      <div className="max-w-[1080px] w-full rounded-xl overflow-hidden shadow-2xl font-monoCustom text-sm">
+
+        {/* 타이틀 바 */}
+        <div className="bg-[#2a2a2a] px-4 py-3 flex items-center gap-2">
+          <span className="w-3 h-3 rounded-full bg-[#ff5f57]" />
+          <span className="w-3 h-3 rounded-full bg-[#febc2e]" />
+          <span className="w-3 h-3 rounded-full bg-[#28c840]" />
+          <span className="ml-4 text-neutral-400 text-xs">~/portfolio — skills</span>
+        </div>
+
+        {/* 터미널 바디 */}
+        <div className="bg-[#0f0f0f] px-6 py-5 flex gap-6">
+
+          {/* 좌측: 스킬 목록 */}
+          <div className="flex-1 leading-7 min-w-0">
+            {SKILL_LINES.slice(0, skillCount).map((line, i) => {
+              if (line.type === "blank") return <div key={i} className="h-2" />;
+              return (
+                <div
+                  key={i}
+                  className={
+                    line.type === "command"
+                      ? "text-green-400"
+                      : line.type === "category"
+                        ? "text-yellow-300 font-bold"
+                        : "text-neutral-300"
+                  }
+                >
+                  {line.text}
+                </div>
+              );
+            })}
+
+            {skillCount > 0 && (
+              <div className="text-green-400 mt-2 flex items-center gap-1">
+                <span>$</span>
+                <span
+                  className="inline-block w-[0.5em] h-[1em] bg-green-400 translate-y-[1px]"
+                  style={{ opacity: cursorOn ? 1 : 0 }}
+                />
+              </div>
+            )}
+          </div>
+
+          {/* 구분선 */}
+          <div className="w-px bg-neutral-700 self-stretch" />
+
+          {/* 우측: neofetch 프로필 */}
+          <div className="flex-1 leading-7 min-w-0">
+            {PROFILE_LINES.slice(0, profileCount).map((line, i) => (
+              <div key={i}>
+                {line.type === "header" && (
+                  <span className="text-green-400 font-bold">{line.value}</span>
+                )}
+                {line.type === "divider" && (
+                  <span className="text-neutral-600">{line.value}</span>
+                )}
+                {line.type === "info" && (
+                  <span>
+                    <span className="text-yellow-300">{line.label}</span>
+                    <span className="text-neutral-500"> : </span>
+                    <span className="text-neutral-300">{line.value}</span>
+                  </span>
+                )}
+              </div>
+            ))}
+
+            {showPalette && (
+              <div className="flex gap-1 mt-5">
+                {PALETTE.map((color) => (
+                  <span
+                    key={color}
+                    className="inline-block w-4 h-4 rounded-sm"
+                    style={{ backgroundColor: color }}
+                  />
+                ))}
+              </div>
+            )}
+          </div>
+
+        </div>
       </div>
     </section>
   );

@@ -1,3 +1,4 @@
+import CursorEffect from "@/components/CursorEffect";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import type { Metadata } from "next";
@@ -40,6 +41,7 @@ export default function RootLayout({
       <body
         className={`${shareTechMono.variable} ${pretendard.variable} font-sans antialiased dark:bg-black min-h-screen dark:text-white`}
       >
+        <CursorEffect />
         <Header />
         <main className="flex flex-col items-start gap-6 pt-14">
           {children}

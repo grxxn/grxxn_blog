@@ -18,7 +18,9 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  /* cursor: none; */
 }
+
 body {
   color: var(--foreground);
   background: var(--background);

@@ -7,11 +7,11 @@ export default function HomePage() {
     <>
       <ProfileSection />
 
-      {/* TODO: API 연동 계획 */}
-      <section className="w-full flex flex-col gap-9 mb-28">
-        <WorkCard />
-        <WorkCard />
-        <WorkCard />
+      <section className="w-full max-w-[1080px] mx-auto flex flex-col mb-28 border-b border-neutral-200">
+        <h2 className="font-monoCustom font-bold text-sm text-neutral-400 mb-4">WORK</h2>
+        <WorkCard index={1} />
+        <WorkCard index={2} />
+        <WorkCard index={3} />
       </section>
 
       <SkillsSection />

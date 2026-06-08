@@ -2,77 +2,101 @@
 
 import Image from "next/image";
 import { useState } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { WorkCardModal } from "./WorkCardModal";
 
-const Badge = ({ text }: { text: string }) => (
-  <span className="text-sm font-monoCustom px-2 py-1 rounded-full border bg-green-50 border-green-200 text-green-600">
-    {text}
-  </span>
-);
+const TAGS = ["Next.js", "TypeScript", "Vercel", "TailwindCSS"];
 
-export const WorkCard = () => {
+export const WorkCard = ({ index }: { index: number }) => {
+  const [expanded, setExpanded] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const num = String(index).padStart(2, "0");
 
   return (
     <>
-      {/* 래퍼: 3px 패딩으로 border 트랙 확보, bg-gray-200로 기본 border 표현 */}
-      <div className="group relative p-px rounded-[17px] max-w-[1080px] mx-auto cursor-pointer bg-gray-200 shadow-[0_2px_0_0_#e5e7eb,0_8px_24px_-4px_rgba(0,0,0,0.08)]">
-        {/* 회전하는 green 띠 — hover 시 fade-in */}
-        <div className="absolute inset-0 rounded-[17px] overflow-hidden opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
-          <motion.div
-            animate={{ rotate: 360 }}
-            transition={{ duration: 2.5, repeat: Infinity, ease: "linear" }}
-            style={{
-              position: "absolute",
-              width: "200%",
-              aspectRatio: "1",
-              top: "50%",
-              left: "50%",
-              x: "-50%",
-              y: "-50%",
-              background:
-                "conic-gradient(from 0deg, transparent 0%, transparent 60%, #6ee7b7 65%, #4ade80 70%, #22c55e 76%, #16a34a 80%, #22c55e 84%, #4ade80 89%, #6ee7b7 93%, transparent 96%, transparent 100%)",
-            }}
-          />
+      <div
+        className="border-t border-neutral-200 group cursor-pointer"
+        onMouseEnter={() => setExpanded(true)}
+        onMouseLeave={() => setExpanded(false)}
+      >
+        {/* 기본 행 */}
+        <div className="flex items-center gap-8 py-7">
+          <span className="font-monoCustom text-neutral-400 text-sm w-8 shrink-0">
+            {num}
+          </span>
+          <h3 className="font-monoCustom font-bold text-4xl flex-1 transition-colors duration-200 group-hover:text-green-500">
+            GRXXN&apos;S BLOG
+          </h3>
+          <span className="font-monoCustom text-neutral-400 text-sm shrink-0">
+            2024
+          </span>
+          <motion.span
+            animate={{ rotate: expanded ? -90 : 0 }}
+            transition={{ duration: 0.25, ease: "easeInOut" }}
+            className="font-monoCustom text-xl shrink-0 inline-block transition-colors duration-200 group-hover:text-green-500"
+          >
+            →
+          </motion.span>
         </div>
 
-        {/* 실제 카드 */}
-        <div className="card flex gap-8 rounded-[16px] pr-3 pl-10 py-3 overflow-hidden relative bg-[#fefefe]">
-          {/* 호버 시 하단 그라데이션 */}
-          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-3/5 bg-gradient-to-t from-green-100/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-0" />
-
-          <div className="py-10 flex-1 flex flex-col gap-3 relative z-10">
-            <h3 className="font-monoCustom font-bold text-[40px]">TITLE</h3>
-            <p className="text-base">description</p>
-            <div className="flex gap-2 flex-wrap mt-3">
-              <Badge text="# Next.js" />
-              <Badge text="# TypeScript" />
-              <Badge text="# Vercel" />
-              <Badge text="# tailwindCSS" />
-            </div>
-            <button
-              type="button"
-              onClick={() => setIsModalOpen(true)}
-              className="mt-16 font-monoCustom font-bold w-full rounded-full cursor-pointer py-3 text-sm text-gray-700 border border-gray-200 bg-gradient-to-b from-white to-gray-100 shadow-[inset_0_1px_0_rgba(255,255,255,0.8),0_1px_2px_rgba(0,0,0,0.06)] hover:to-gray-200 hover:border-gray-300 hover:shadow-[inset_0_1px_0_rgba(255,255,255,1),0_3px_0_#e2e5e9,0_4px_8px_-1px_rgba(0,0,0,0.02)] active:translate-y-0.5 active:shadow-[inset_0_1px_3px_rgba(0,0,0,0.08),0_1px_0_#d4d8de] transition-all duration-150"
+        {/* 확장 영역 */}
+        <AnimatePresence>
+          {expanded && (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: "auto", opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.22, ease: "easeInOut" }}
+              className="overflow-hidden"
             >
-              Open Case
-            </button>
-          </div>
-          <Image
-            src="/images/post_250830/result.png"
-            alt=""
-            width={600}
-            height={500}
-            className="relative z-10 w-full max-w-2xl h-auto rounded-2xl border border-gray-100"
-          />
-        </div>
+              <div className="flex gap-10 pb-8 pl-16">
+                {/* 좌측: 타이틀 + 설명 + 태그 + 버튼 */}
+                <div className="flex flex-col gap-3 flex-1 justify-between">
+                  <div className="flex flex-col gap-3">
+                    <p className="text-neutral-500 text-sm leading-relaxed max-w-lg">
+                      개인 프로젝트, 개발 회고, 회사의 기술 등 다양한 내용을
+                      기록하는 공간입니다.
+                    </p>
+                    <div className="flex gap-2 flex-wrap">
+                      {TAGS.map((tag) => (
+                        <span
+                          key={tag}
+                          className="font-monoCustom text-xs px-2 py-1 border border-neutral-200 rounded text-neutral-500"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setIsModalOpen(true);
+                    }}
+                    className="self-start font-monoCustom text-sm font-bold px-6 py-2.5 border border-neutral-800 rounded-full hover:bg-neutral-800 hover:text-white transition-colors"
+                  >
+                    Open Case →
+                  </button>
+                </div>
+
+                {/* 우측: 썸네일 */}
+                <div className="shrink-0">
+                  <Image
+                    src="/images/post_250830/result.png"
+                    alt="grxxn's blog preview"
+                    width={400}
+                    height={260}
+                    className="w-[400px] h-[220px] object-cover rounded-xl border border-neutral-100"
+                  />
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
 
-      <WorkCardModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-      />
+      <WorkCardModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
     </>
   );
 };
